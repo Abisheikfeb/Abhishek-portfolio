@@ -2,7 +2,7 @@ import React from 'react';
 import { FaJava } from "react-icons/fa";
 import { TbBrandCSharp } from "react-icons/tb";
 import { SiSpringboot } from "react-icons/si";
-import { Bs0Circle } from "react-icons/bs";
+
 import {
   LineChart,
   Line,

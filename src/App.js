@@ -15,6 +15,7 @@ function App() {
   const [user, setUser] = useState(null);
 
   const handleLogin = (loggedInUser) => {
+    
     setUser(loggedInUser);
   };
 
