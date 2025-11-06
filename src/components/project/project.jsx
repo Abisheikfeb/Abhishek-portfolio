@@ -80,15 +80,9 @@ const Project = ({ isLoggedIn }) => {
     }
   };
 
-  const closeLoginMessage = () => {
-    setShowLoginMessage(false);
-  };
+  const closeLoginMessage = () => setShowLoginMessage(false);
+  const toggleShowMore = () => setShowMore(true);
 
-  const toggleShowMore = () => {
-    setShowMore(true);
-  };
-
-  // Firework particle animation variants
   const fireworkVariants = {
     initial: { scale: 0, opacity: 1, x: 0, y: 0 },
     animate: (i) => ({
@@ -96,26 +90,30 @@ const Project = ({ isLoggedIn }) => {
       opacity: [1, 0.8, 0],
       x: Math.cos(i * Math.PI / 4) * 100,
       y: Math.sin(i * Math.PI / 4) * 100,
-      transition: { duration: 1, ease: 'easeOut' }
-    })
+      transition: { duration: 1, ease: 'easeOut' },
+    }),
   };
 
   return (
-    <div id='projects' className="mt-12 px-4 sm:px-6 lg:px-8">
+    <div
+      id="projects"
+      className="min-h-screen mt-0 pt-0 px-4 sm:px-6 lg:px-8"
+    >
       <motion.h1
-        className="text-center font-bold text-4xl md:text-5xl mb-12"
+        className="text-center font-bold text-4xl md:text-5xl mb-12 pt-12"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
-        <span className="text-red-500">P</span>rojects
+        <span className="text-red-600">P</span>rojects
       </motion.h1>
 
+      {/* Project Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
         {initialData.slice(0, showMore ? initialData.length : 3).map((image) => (
           <motion.div
             key={image.id}
-            className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-shadow duration-300"
+            className="relative bg-white/90 dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: image.id * 0.1 }}
@@ -144,7 +142,9 @@ const Project = ({ isLoggedIn }) => {
                 ) : (
                   <IoIosHeartEmpty className="text-2xl text-gray-400 dark:text-gray-500" />
                 )}
-                <span className="text-gray-900 dark:text-gray-100 font-medium">{likeCounts[image.id] || 0}</span>
+                <span className="text-gray-900 dark:text-gray-100 font-medium">
+                  {likeCounts[image.id] || 0}
+                </span>
               </motion.button>
               <motion.button
                 onClick={() => handleLinkClick(image.link)}
@@ -155,6 +155,8 @@ const Project = ({ isLoggedIn }) => {
                 <FiExternalLink size={24} />
               </motion.button>
             </div>
+
+            {/* Celebration Fireworks */}
             <AnimatePresence>
               {celebrationProject === image.id && (
                 <motion.div
@@ -191,7 +193,8 @@ const Project = ({ isLoggedIn }) => {
         ))}
       </div>
 
-      <div className="text-center mt-8">
+      {/* Show More Button */}
+      <div className="text-center mt-8 pb-12">
         <AnimatePresence>
           {!showMore && (
             <motion.button
@@ -209,6 +212,7 @@ const Project = ({ isLoggedIn }) => {
         </AnimatePresence>
       </div>
 
+      {/* Login Modal */}
       <AnimatePresence>
         {showLoginMessage && (
           <motion.div

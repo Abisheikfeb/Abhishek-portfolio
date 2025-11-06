@@ -19,7 +19,7 @@ import img7 from '../../assets/warning.svg';
 
 // Loading Spinner Component
 const LoadingSpinner = () => (
-  <div className="flex items-center justify-center space-x-2">
+  <div className="  flex items-center justify-center space-x-2">
     <FaSpinner className="animate-spin text-white" />
     <span>Downloading...</span>
   </div>
@@ -55,7 +55,7 @@ const PdfDownloadCard = () => {
   };
 
   return (
-    <div id="certificate" className="mt-12">
+    <div id="certificate" className=" mt-12">
       <h1 className="text-center font-bold mt-10 text-4xl">
         <span className="text-red-500 text-5xl">C</span>ertificates
       </h1>

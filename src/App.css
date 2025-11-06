@@ -4,15 +4,12 @@
 
 
 
-
-body
-{
-  height: 100vh;
-  background:rgba(5, 5, 5, 0.826);
-  color: white;
-  font-family: 'outfit';
+body { 
+  height: 100vh; 
+  background: linear-gradient( to bottom, #ffc9c9, #edebd0);
+  
+  color: white; font-family: 'Outfit', sans-serif; 
 }
-
 
 @keyframes borderChange {
   0% {

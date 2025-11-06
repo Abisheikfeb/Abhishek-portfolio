@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { items } from "./items";
 
 export default function MultiFilters() {
-  const [activeFilter, setActiveFilter] = useState(null); // Single active filter
+  const [activeFilter, setActiveFilter] = useState(null);
   const [filteredItems, setFilteredItems] = useState(items);
 
   const filters = ["SHOW ALL", "LANGUAGES", "FRAME WORK", "VERSIONS", "DATABASE"];
@@ -10,17 +10,17 @@ export default function MultiFilters() {
   // Handle clicking on a filter button
   const handleFilterButtonClick = (selectedCategory) => {
     setActiveFilter((prevFilter) =>
-      prevFilter === selectedCategory ? null : selectedCategory // Toggle or activate
+      prevFilter === selectedCategory ? null : selectedCategory
     );
   };
 
-  // Filtering logic to update filteredItems based on activeFilter
+  // Filtering logic
   const filterItems = useCallback(() => {
     if (activeFilter && activeFilter !== "SHOW ALL") {
       const tempItems = items.filter((item) => item.category === activeFilter);
       setFilteredItems(tempItems);
     } else {
-      setFilteredItems(items); // Show all items if "SHOW ALL" or no filter is active
+      setFilteredItems(items);
     }
   }, [activeFilter]);
 
@@ -30,23 +30,24 @@ export default function MultiFilters() {
 
   return (
     <div id="myskill">
-      <div className="font-medium text-3xl text-center mt-20">
+      {/* Smooth Gradient Header */}
+      <div className="font-medium text-3xl text-center mt-20 py-6">
         <h1>
           <span className="text-4xl text-red-400">MY</span> SKILLS
         </h1>
       </div>
 
-      <div className="grid grid-cols-3 gap-x-1 gap-y-1 text-sm mt-5 md:flex md:justify-center md:gap-4 ">
+      {/* Filter Buttons */}
+      <div className="grid grid-cols-3 gap-x-1 gap-y-1 text-sm mt-5 md:flex md:justify-center md:gap-4">
         {filters.map((category) => (
           <button
+            key={category}
             onClick={() => handleFilterButtonClick(category)}
-            className={`
-              flex items-center justify-center border-2 bg-red-200 hover:bg-green-200 text-sm ml-4
-              h-6 w-24 rounded-md text-black md:h-12 md:w-36 md:text-lg md:px-3 md:py-2 
+            className={`flex items-center justify-center border-2 bg-red-200 hover:bg-green-200 text-sm ml-4
+              h-6 w-24 rounded-md text-black md:h-12 md:w-36 md:text-lg md:px-3 md:py-2
               ${activeFilter === category ? "bg-green-300 border-green-600" : ""}
               ${category === "FRAME WORK" ? "whitespace-nowrap" : ""}
             `}
-            key={category}
             aria-pressed={activeFilter === category}
             aria-label={`Filter by ${category}`}
           >
@@ -55,6 +56,7 @@ export default function MultiFilters() {
         ))}
       </div>
 
+      {/* Filtered Items */}
       <div className="flex flex-wrap gap-3 justify-center mt-10">
         {filteredItems.map((item) => (
           <div

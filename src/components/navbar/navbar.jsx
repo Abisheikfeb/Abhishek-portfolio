@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaListUl, FaHome, FaUser, FaLaptopCode, FaCertificate, FaPhoneAlt } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
 import RegisterForm from '../project/RegisterForm';
@@ -6,10 +6,32 @@ import RegisterForm from '../project/RegisterForm';
 const Navbar = ({ onLogin, user }) => {
   const [navOpen, setNavOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const handleNavToggle = () => setNavOpen(!navOpen);
   const openRegister = () => setIsRegisterOpen(true);
   const closeRegister = () => setIsRegisterOpen(false);
+
+   useEffect(() => {
+  const controlNavbar = () => {
+    if (window.scrollY > lastScrollY) {
+      
+      setShowNavbar(false);
+    } else {
+    
+      setShowNavbar(true);
+    }
+    setLastScrollY(window.scrollY);
+  };
+
+ 
+    window.addEventListener('scroll', controlNavbar);
+    return () => {
+      window.removeEventListener('scroll', controlNavbar);
+    };
+  },
+   [lastScrollY]);
 
   const handleLogin = (loggedInUser) => {
     onLogin(loggedInUser);
@@ -26,7 +48,11 @@ const Navbar = ({ onLogin, user }) => {
   ];
 
   return (
-    <div className="fixed top-0 left-0 w-full z-50 flex justify-center">
+    <div
+      className={`fixed top-0 left-0 w-full z-50 flex justify-center transition-transform duration-300 ${
+        showNavbar ? 'translate-y-0' : '-translate-y-full'
+      }`}
+    >
       <div className="w-[95%] md:w-[70%] bg-white rounded-full shadow-md px-5 py-2 flex items-center justify-between mt-4">
         <h1 className="text-blue-700 font-bold text-xl md:text-2xl">ABISHEIK</h1>
 
@@ -89,5 +115,4 @@ const Navbar = ({ onLogin, user }) => {
   );
 };
 
-// ✅ Default export must be **outside the function**
 export default Navbar;

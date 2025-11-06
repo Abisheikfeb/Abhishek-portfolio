@@ -31,17 +31,17 @@ const Hero = () => {
   };
 
   return (
-    <div className="hero-container relative min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden">
-      {/* Card Container */}
-      <div className="bg-white/10 backdrop-blur-lg border border-amber-500 rounded-3xl shadow-xl p-8 flex flex-col items-center w-full max-w-md">
-        {/* Profile Image */}
-        <img
-          className="h-40 w-40 rounded-full border-4 border-pink-400 shadow-lg shadow-pink-500/50 object-cover"
-          src={photo}
-          alt="Profile"
-        />
+  <div id="home" className="  bg-gradient-to-b from-red-200  to-yellow-100  hero-container relative min-h-screen flex flex-col items-center justify-center p-5 overflow-hidden">
+  
+  <div className="bg-sky-200 backdrop-blur-lg border border-amber-500 rounded-3xl shadow-xl p-3 flex flex-col items-center w-full max-w-md">
+   
+    <img
+      className="h-40 w-40 rounded-full border-4 border-pink-400 shadow-lg shadow-pink-500/50 object-cover"
+      src={photo}
+      alt="Profile"
+    />
 
-        {/* Static Info */}
+      
         <h1 className="mt-6 text-3xl font-bold text-amber-300">I am Abisheik</h1>
         <p className="text-lg text-lime-200">Generative AI & Java Developer</p>
         <p className="mt-2 text-center text-sm text-gray-200 px-4">
@@ -59,7 +59,7 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Social Media */}
+     
       <div className="mt-8 flex space-x-5">
         <a
           className="bg-white rounded-full p-2 text-blue-500 hover:scale-110 transition"
