@@ -2,19 +2,15 @@ import React, { useState, useEffect, useCallback } from "react";
 import { items } from "./items";
 
 export default function MultiFilters() {
-  const [activeFilter, setActiveFilter] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("SHOW ALL");
   const [filteredItems, setFilteredItems] = useState(items);
 
   const filters = ["SHOW ALL", "LANGUAGES", "FRAME WORK", "VERSIONS", "DATABASE"];
 
-  // Handle clicking on a filter button
   const handleFilterButtonClick = (selectedCategory) => {
-    setActiveFilter((prevFilter) =>
-      prevFilter === selectedCategory ? null : selectedCategory
-    );
+    setActiveFilter(selectedCategory);
   };
 
-  // Filtering logic
   const filterItems = useCallback(() => {
     if (activeFilter && activeFilter !== "SHOW ALL") {
       const tempItems = items.filter((item) => item.category === activeFilter);
@@ -29,51 +25,71 @@ export default function MultiFilters() {
   }, [activeFilter, filterItems]);
 
   return (
-    <div id="myskill">
-      {/* Smooth Gradient Header */}
-      <div className="font-medium text-3xl text-center mt-20 py-6">
-        <h1>
-          <span className="text-4xl text-red-400">MY</span> SKILLS
+    <div id="myskill" className="min-h-screen bg-[#f8fafc] py-20 px-4 sm:px-6 lg:px-8 font-sans">
+      {/* Header Section */}
+      <div className="max-w-4xl mx-auto text-center mb-12">
+        <h2 className="text-blue-600 font-bold tracking-widest uppercase text-sm mb-3">Expertise</h2>
+        <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6">
+          Technical <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">Stack.</span>
         </h1>
+        <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+          A comprehensive look at the languages, frameworks, and tools I use to build robust applications.
+        </p>
       </div>
 
-      {/* Filter Buttons */}
-      <div className="grid grid-cols-3 gap-x-1 gap-y-1 text-sm mt-5 md:flex md:justify-center md:gap-4">
+      {/* Modern Filter Tabs */}
+      <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-16">
         {filters.map((category) => (
           <button
             key={category}
             onClick={() => handleFilterButtonClick(category)}
-            className={`flex items-center justify-center border-2 bg-red-200 hover:bg-green-200 text-sm ml-4
-              h-6 w-24 rounded-md text-black md:h-12 md:w-36 md:text-lg md:px-3 md:py-2
-              ${activeFilter === category ? "bg-green-300 border-green-600" : ""}
-              ${category === "FRAME WORK" ? "whitespace-nowrap" : ""}
-            `}
-            aria-pressed={activeFilter === category}
-            aria-label={`Filter by ${category}`}
+            className={`px-5 py-2.5 rounded-2xl text-sm font-bold transition-all duration-300 border ${
+              activeFilter === category
+                ? "bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-200"
+                : "bg-white text-slate-500 border-slate-100 hover:border-blue-200 hover:text-blue-600"
+            }`}
           >
             {category}
           </button>
         ))}
       </div>
 
-      {/* Filtered Items */}
-      <div className="flex flex-wrap gap-3 justify-center mt-10">
-        {filteredItems.map((item) => (
+      {/* Skills Grid */}
+      <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        {filteredItems.map((item, index) => (
           <div
             key={item.name}
-            className="border-2 border-red-500 bg-violet-300 shadow-lg shadow-yellow-500 rounded-md p-2 md:p-10 md:h-60"
+            className="group relative bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-2 transition-all duration-500 flex flex-col items-center"
           >
-            <img
-              src={item.images}
-              alt={item.name}
-              className="border-2 bg-white rounded-md border-yellow-300 h-15 w-20 md:h-28 md:w-28"
-            />
-            <p className="flex justify-center text-md text-black md:text-2xl md:justify-center md:mt-9">
+            {/* Icon Container */}
+            <div className="relative mb-4 w-20 h-20 flex items-center justify-center">
+              <div className="absolute inset-0 bg-slate-50 rounded-2xl group-hover:bg-blue-50 transition-colors duration-500"></div>
+              <img
+                src={item.images}
+                alt={item.name}
+                className="relative w-12 h-12 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+
+            {/* Label */}
+            <p className="text-sm font-black text-slate-400 group-hover:text-slate-900 uppercase tracking-tighter transition-colors">
               {item.name}
             </p>
+
+            {/* Subtle category tag on hover */}
+            <span className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full transition-opacity">
+              {item.category}
+            </span>
           </div>
         ))}
       </div>
+
+      {/* Empty State */}
+      {filteredItems.length === 0 && (
+        <div className="text-center py-20">
+          <p className="text-slate-400 italic">No skills found in this category.</p>
+        </div>
+      )}
     </div>
   );
 }

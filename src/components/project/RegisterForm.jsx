@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { FaUser, FaEnvelope, FaLock, FaUserPlus, FaSignInAlt, FaSync } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaSync } from 'react-icons/fa';
+import { FiArrowRight } from 'react-icons/fi';
 
 const RegisterForm = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
 
@@ -15,92 +17,101 @@ const RegisterForm = ({ onLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const url = isLogin
       ? `${API_BASE_URL}/api/auth/login`
       : `${API_BASE_URL}/api/auth/register`;
 
     try {
       const res = await axios.post(url, formData);
-      setMessage(`Welcome, ${res.data.name || formData.name}!`);
+      setMessage(`Success! Welcome, ${res.data.name || formData.name}`);
       onLogin(res.data);
     } catch (error) {
-      setMessage(error.response?.data?.message || 'An error occurred.');
+      setMessage(error.response?.data?.message || 'Something went wrong.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="md:mb-5 w-full py-2">
-      <div className="w-full rounded-2xl shadow-xl bg-white p-6 sm:p-10 transition-all duration-500">
-        <div className={`relative ${isLogin ? 'flip' : 'flip-reverse'} transition-all duration-500`}>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-center text-blue-600 flex items-center justify-center gap-3">
-            {isLogin ? (
-              <FaSignInAlt className="text-red-400 text-2xl sm:text-3xl" />
-            ) : (
-              <FaUserPlus className="text-green-500 text-2xl sm:text-3xl" />
-            )}
-            {isLogin ? 'Login to your account' : 'Create a new account'}
-          </h1>
+    <div className="w-full max-w-md mx-auto font-sans">
+      {/* Header Section */}
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-2">
+          {isLogin ? 'Welcome back' : 'Get started'}
+          <span className="text-blue-600">.</span>
+        </h2>
+        <p className="text-slate-500 text-sm font-medium">
+          {isLogin ? 'Enter your details to access your account.' : 'Join the community and start building.'}
+        </p>
+      </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {!isLogin && (
-              <div className="flex items-center border border-red-400 rounded-md p-3 sm:p-4">
-                <FaUser className="text-red-500 mr-3 text-xl sm:text-2xl" />
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full text-black text-base sm:text-lg outline-none"
-                />
-              </div>
-            )}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {!isLogin && (
+          <div className="relative group">
+            <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-600 focus:bg-white transition-all text-slate-900 placeholder:text-slate-400 font-medium"
+              required
+            />
+          </div>
+        )}
 
-            <div className="flex items-center border border-blue-400 rounded-md p-3">
-              <FaEnvelope className="text-blue-500 mr-3 text-xl sm:text-2xl" />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full text-base text-black sm:text-lg outline-none"
-              />
-            </div>
-
-            <div className="flex items-center border border-green-400 rounded-md p-3 sm:p-4">
-              <FaLock className="text-green-600 mr-3 text-xl sm:text-2xl" />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full text-base text-black sm:text-lg outline-none"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full text-lg sm:text-xl py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white rounded-lg font-semibold transition duration-300"
-            >
-              {isLogin ? 'Login' : 'Register'}
-            </button>
-          </form>
-
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="mt-6 flex items-center justify-center text-sm sm:text-base text-gray-600 hover:text-blue-500 transition-all duration-300"
-          >
-            <FaSync className="mr-2 text-red-400 animate-spin-slow text-base sm:text-lg" />
-            Switch to {isLogin ? 'Register' : 'Login'}
-          </button>
+        <div className="relative group">
+          <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-600 focus:bg-white transition-all text-slate-900 placeholder:text-slate-400 font-medium"
+            required
+          />
         </div>
 
+        <div className="relative group">
+          <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-600 focus:bg-white transition-all text-slate-900 placeholder:text-slate-400 font-medium"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm uppercase tracking-widest hover:bg-blue-600 hover:shadow-xl hover:shadow-blue-500/20 transition-all flex items-center justify-center gap-2 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+        >
+          {isLoading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
+          {!isLoading && <FiArrowRight className="text-lg" />}
+        </button>
+      </form>
+
+      {/* Switcher & Messages */}
+      <div className="mt-8 flex flex-col items-center gap-4">
+        <button
+          onClick={() => { setIsLogin(!isLogin); setMessage(''); }}
+          className="group flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest hover:text-blue-600 transition-colors"
+        >
+          <FaSync className={`transition-transform duration-500 ${isLoading ? 'animate-spin' : 'group-hover:rotate-180'}`} />
+          {isLogin ? 'Need an account? Register' : 'Already have an account? Login'}
+        </button>
+
         {message && (
-          <p className="mt-5 text-center text-red-600 text-base sm:text-lg font-medium transition-all duration-300">
+          <div className={`text-sm font-bold px-4 py-2 rounded-lg ${message.includes('Success') ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-500 animate-shake'}`}>
             {message}
-          </p>
+          </div>
         )}
       </div>
     </div>

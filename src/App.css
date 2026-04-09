@@ -2,103 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-body { 
-  height: 100vh; 
-  background: linear-gradient( to bottom, #ffc9c9, #edebd0);
-  
-  color: white; font-family: 'Outfit', sans-serif; 
-}
-
-@keyframes borderChange {
-  0% {
-    border-color: blue;
-  }
-  25% {
-    border-color: red;
-  }
-  50% {
-    border-color: green;
-  }
-  75% {
-    border-color: purple;
-  }
-  100% {
-    border-color: blue;
+@layer base {
+  body { 
+    @apply bg-[#f8fafc] text-slate-900;
+    font-family: 'Outfit', sans-serif; 
+    scroll-behavior: smooth;
   }
 }
 
-
-
-.animate-borderChange {
-  animation: borderChange 4s infinite;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-
-/* styles.css */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
+@layer utilities {
+  /* Terminal Cursor Blink */
+  .animate-cursor-blink {
+    animation: blink 1s step-end infinite;
   }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-@keyframes spin-slow {
-  0% {
-    transform: rotate(0deg);
+  @keyframes blink {
+    from, to { background-color: transparent; }
+    50% { background-color: #4ade80; } /* Matches green-400 */
   }
-  100% {
-    transform: rotate(360deg);
+
+  /* Smooth Fade In for Hero Elements */
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Slow Spin for the Switch Icon */
+  .animate-spin-slow {
+    animation: spin 3s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 }
 
-.animate-spin-slow {
-  animation: spin-slow 1s linear infinite;
-}
-
-
-
-
-
-/* Flip Animation */
-@keyframes flip {
-  0% {
-    transform: rotateY(180deg);
-  }
-  100% {
-    transform: rotateY(0deg);
-  }
-}
-
-/* Reverse Flip Animation */
-@keyframes flipReverse {
-  0% {
-    transform: rotateY(180deg);
-  }
-  100% {
-    transform: rotateY(0deg);
-  }
-}
-
-/* Flip animation on state change */
+/* --- Keep your existing Flip Animations for the Login --- */
 .flip {
-  animation: flip 0.7s ease-in-out forwards;
+  animation: flip 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Reverse flip animation */
 .flip-reverse {
-  animation: flipReverse 0.7s ease-in-out forwards;
+  animation: flip 0.6s cubic-bezier(0.4, 0, 0.2, 1) reverse forwards;
+}
+
+@keyframes flip {
+  0% { transform: perspective(1000px) rotateY(10deg); opacity: 0; }
+  100% { transform: perspective(1000px) rotateY(0deg); opacity: 1; }
+}
+
+/* Custom Scrollbar for the Terminal/Modals */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
 }
