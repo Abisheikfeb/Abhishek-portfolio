@@ -3,7 +3,7 @@ import photo from "../../assets/my image.jpg";
 import { IoEyeOutline, IoTerminalOutline } from "react-icons/io5";
 import { FaLinkedin, FaInstagram, FaDownload, FaGithub } from "react-icons/fa6";
 import { GoMail } from "react-icons/go";
-import sample1 from "../../pdf/RESUME.pdf";
+import sample1 from "../../pdf/MYRESUME.pdf";
 import axios from "axios";
 
 const Hero = () => {
